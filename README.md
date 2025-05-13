@@ -1,81 +1,89 @@
 # Grocery Monandra DB Execution Time Monitor
 
-Panduan lengkap untuk setup dan menjalankan *Streamlit* app yang memonitor execution time query ke Cassandra dan MongoDB.
+This repository contains a Streamlit application designed to measure and compare query execution times against two NoSQL databases: Cassandra and MongoDB. It supports both raw and indexed access patterns, as well as custom query execution and aggregation scenarios.
 
-## 📁 Struktur Direktori
+## Project Structure
 
 ```
-CATATAN_TUBES_ROBD/
+Y:/DEVELOPER/PROJECTS/GROCERY-MONANDRA
 │   app.py
 │   README.md
-├── data/
-│   ├── Cassandra/
-│   │   ├── gen_cql.py
-│   │   └── inserts.cql
-│   └── MongoDB/
-│       ├── .env
-│       ├── init_mongo.py
-│       └── mongo_utils.py
-└── utils/
-    ├── cassandra_utils.py
-    └── mongo_utils.py
+│
+├── data
+│   ├── Cassandra
+│   │   ├── gen_cql.py           # Script to generate initial CQL inserts
+│   │   └── inserts.cql          # Sample insert statements
+│   └── MongoDB
+│       ├── .env                 # Environment variables for MongoDB connection
+│       ├── .gitignore
+│       ├── init_mongo.py        # Initial data loader for MongoDB
+│       └── mongo_utils.py       # Helper for MongoDB connection
+│
+└── utils
+    ├── .env                     # Additional environment settings
+    ├── .gitignore
+    ├── cassandra_utils.py       # Cassandra connection helper
+    ├── mongo_utils.py           # MongoDB connection helper
+    ├── mongo_index_utils.py     # Script to create indexed MongoDB collections
+    ├── setup_indexes_cassandra.py  # Script to create and populate indexed Cassandra table
+    
+    └── __pycache__
+        ├── cassandra_utils.cpython-311.pyc
+        ├── cassandra_utils.cpython-312.pyc
+        └── mongo_utils.cpython-311.pyc
 ```
 
-## 🔧 Prasyarat
+## Recent Progress and Features
 
-* Docker
-* Conda atau virtualenv
-* Python 3.11
-* `pip`
+- **Database Setup Automation**: Scripts under `data/` and `utils/` automate the creation of keyspaces, tables, collections, and indexes for both databases.
+- **Indexed vs Non‑indexed Workflows**: Separate pipelines and tables for raw and indexed access patterns in Cassandra (`transaksi_harian` vs `indexed_transaksi_harian`), plus separate MongoDB databases (`groceries` vs `indexed_groceries`).
+- **Streamlit Dashboard** (`app.py`):
+  - Side‑by‑side benchmarking for Cassandra and MongoDB.
+  - Custom query/filter inputs with recommended examples in collapsible side panels.
+  - Execution time measurement includes full result fetch to ensure accurate timing.
+  - Aggregation scenarios for Cassandra (top sales, averages, daily counts) alongside simple retrieval workflows.
+- **State Persistence**: Results and timings are retained in session state so that tables and charts remain visible until explicitly cleared or the app is refreshed.
+- **Visualization**: Dynamic bar charts rendered with Streamlit’s built‑in charting for clear comparison between non‑indexed and indexed runs.
 
-## 1. Setup Environment Python
+## Prerequisites
 
-1. Buat dan aktifkan Conda environment dengan Python 3.11:
+- Docker (for Cassandra container)
+- Conda or any Python 3.11 environment
+- `pip` for dependency installation
 
+## Environment Setup
+
+1. **Create Python environment** (example with Conda):
    ```bash
    conda create -n monandra311 python=3.11 -y
    conda activate monandra311
    ```
-2. Install dependency:
-
+2. **Install Python packages**:
    ```bash
-   pip install \
-     cassandra-driver \
-     pymongo python-dotenv \
-     streamlit pandas matplotlib
+   pip install cassandra-driver pymongo python-dotenv streamlit pandas
    ```
 
-## 2. Setup Cassandra
+## Data Initialization
 
-1. Pull image dan buat network Docker:
+### Cassandra
 
+1. Pull and run the Docker container:
    ```bash
    docker pull cassandra:latest
    docker network create cassandra
+   docker run -d --name cassandra --network cassandra -p 9042:9042 cassandra:latest
    ```
-2. Jalankan container Cassandra dengan port mapping:
-
+2. Create keyspace, table, and index in one interactive session:
    ```bash
-   docker run -d \
-     --name cassandra \
-     --network cassandra \
-     -p 9042:9042 \
-     cassandra:latest
-   ```
-3. Tunggu 30–60 detik hingga Cassandra siap, kemudian buat keyspace & tabel:
-
-   ```bash
-   docker exec -it cassandra cqlsh
-   ```
-
-   Di prompt `cqlsh>` jalankan:
-
-   ```sql
+   docker exec -it cassandra cqlsh <<EOF
+   -- 1) Create keyspace
    CREATE KEYSPACE IF NOT EXISTS groceries
      WITH replication = {'class':'SimpleStrategy','replication_factor':1};
 
+   -- 2) Use the keyspace
    USE groceries;
 
+   -- 3) Create the raw transactions table
    CREATE TABLE IF NOT EXISTS transaksi_harian (
      id_transaksi_harian uuid PRIMARY KEY,
      id_transaksi        text,
@@ -88,66 +96,66 @@ CATATAN_TUBES_ROBD/
      total_transaksi     decimal
    );
 
+   -- 4) Create a secondary index on branch
    CREATE INDEX IF NOT EXISTS idx_transaksi_cabang
      ON transaksi_harian (id_cabang);
+   EOF
    ```
-4. (Opsional) Import data bulk via `data/Cassandra/inserts.cql`:
-
+3. Generate and import sample data:
+   - Run the generator script to produce `inserts.cql`:
+     ```bash
+     python data/Cassandra/gen_cql.py > data/Cassandra/inserts.cql
+     ```
+   - Load the data into Cassandra:
+     ```bash
+     docker exec -i cassandra cqlsh -k groceries < data/Cassandra/inserts.cql
+     ```
+4. Set up the indexed table and populate it:
    ```bash
-   docker exec -i cassandra cqlsh -k groceries < data/Cassandra/inserts.cql
+   python utils/setup_indexes_cassandra.py
    ```
 
-## 3. Setup MongoDB
+### MongoDB
 
-1. Tambahkan file `.env` di `data/MongoDB/` dengan isi:
-
-   ```dotenv
-   CONNECTION_STRING="mongodb+srv://ilokuda:<passwordnya_masukin>@cluster-experiment-yaff.bfurl13.mongodb.net/?retryWrites=true&w=majority&appName=cluster-experiment-yaffa"
+1. Prepare the connection string in `data/MongoDB/.env`:
+   ```ini
+   CONNECTION_STRING="mongodb+srv://<username>:<password>@cluster-experiment-yaff.bfurl13.mongodb.net/?retryWrites=true&w=majority&appName=cluster-experiment-yaffa"
    ```
-2. Jalankan script inisialisasi:
-
+2. Load initial collections into `groceries` database:
    ```bash
    cd data/MongoDB
    python init_mongo.py
    ```
+3. Create and index the `indexed_groceries` database:
+   ```bash
+   python utils/mongo_index_utils.py
+   ```
 
-   Ini akan membuat koleksi `cabang_toko` & `karyawan` beserta data awal.
+## Running the Application
 
-## 4. Struktur Modul Python
 
-* `utils/cassandra_utils.py`: koneksi ke Cassandra (`Cluster(contact_points=['127.0.0.1'], port=9042)`).
-* `utils/mongo_utils.py`: koneksi ke MongoDB (baca `CONNECTION_STRING` dari `.env`).
-* `app.py`: *Streamlit* app utama.
-
-## 5. Menjalankan Aplikasi
-
-Dari direktori root (`CATATAN_TUBES_ROBD/`):
+From the project root:
 
 ```bash
-conda activate monandra311   # atau virtualenv yang sesuai
-docker ps                   # pastikan container cassandra berjalan
-python -m streamlit run app.py
+conda activate monandra311  # or activate your Python 3.11 env
+docker ps                  # ensure Cassandra is running
+streamlit run app.py
 ```
 
-Buka browser di `http://localhost:8501`.
+Access the app at `http://localhost:8501`. Use the sidebar to switch between Cassandra and MongoDB benchmarks, toggle custom queries, and expand recommended examples.
 
-## 6. Cara Penggunaan
+## Usage Notes
 
-1. Pilih cabang (`CB01` atau `CB02`) di sidebar.
-2. Klik:
+- For Cassandra, timing includes full page fetch by converting the result set to a list.
+- For MongoDB, `list(cursor)` triggers a full fetch of matching documents.
+- Aggregation queries for Cassandra are included under recommended examples, such as top‑N sales by employee and daily transaction counts.
 
-   * **Query Cassandra** → tampilkan DataFrame & waktu.
-   * **Query MongoDB** → tampilkan DataFrame & waktu.
-   * **Run Benchmark All** → perbandingan waktu dalam bar chart.
+## Troubleshooting
 
----
-
-## 🛠 Troubleshooting
-
-* **`NoHostAvailable`**: pastikan port 9042 ter-publish dan container Cassandra sudah siap.
-* **`ALLOW FILTERING`**: sudah disertakan di query Cassandra untuk filter by `id_cabang`.
-* **Environment**: wajib Python 3.11 agar driver Cassandra dapat import `asyncore`.
+- **Connection errors**: Verify that Docker container for Cassandra is running and port 9042 is mapped.
+- **Missing indexes**: Run the setup scripts in `utils/` to regenerate indexed tables/collections.
+- **Unexpected performance**: Ensure you use filters or queries that can leverage the created indexes to see a meaningful speedup.
 
 ---
 
-Dokumentasi ini memudahkan setup ulang dan memastikan app dapat berjalan tanpa kendala. Selamat mencoba!
+This README should help you replicate the environment, understand the available features, and extend the benchmarking scenarios as needed.
