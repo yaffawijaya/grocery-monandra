@@ -1,4 +1,4 @@
-# mongo_utils.py (move or symlink from data/MongoDB)
+# utils/mongo_utils.py
 import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
