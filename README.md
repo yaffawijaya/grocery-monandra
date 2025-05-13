@@ -102,7 +102,7 @@ CATATAN_TUBES_ROBD/
 1. Tambahkan file `.env` di `data/MongoDB/` dengan isi:
 
    ```dotenv
-   CONNECTION_STRING="mongodb+srv://ilokuda:ilokudatangjiro@cluster-experiment-yaff.bfurl13.mongodb.net/?retryWrites=true&w=majority&appName=cluster-experiment-yaffa"
+   CONNECTION_STRING="mongodb+srv://ilokuda:<passwordnya_masukin>@cluster-experiment-yaff.bfurl13.mongodb.net/?retryWrites=true&w=majority&appName=cluster-experiment-yaffa"
    ```
 2. Jalankan script inisialisasi:
 
