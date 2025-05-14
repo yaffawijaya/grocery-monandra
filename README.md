@@ -2,10 +2,17 @@
 
 This repository contains a Streamlit application designed to measure and compare query execution times against two NoSQL databases: Cassandra and MongoDB. It supports both raw and indexed access patterns, as well as custom query execution and aggregation scenarios.
 
+## App Demos
+### Cassandra Execution Time Monitoring
+https://raw.githubusercontent.com/yaffawijaya/grocery-monandra/refs/heads/master/assets/cassandra.png
+
+### MongoDB Execution Time Monitoring
+https://raw.githubusercontent.com/yaffawijaya/grocery-monandra/refs/heads/master/assets/mongodb.png
+
 ## Project Structure
 
 ```
-Y:/DEVELOPER/PROJECTS/GROCERY-MONANDRA
+grocery-monandra
 │   app.py
 │   README.md
 │
@@ -26,11 +33,6 @@ Y:/DEVELOPER/PROJECTS/GROCERY-MONANDRA
     ├── mongo_utils.py           # MongoDB connection helper
     ├── mongo_index_utils.py     # Script to create indexed MongoDB collections
     ├── setup_indexes_cassandra.py  # Script to create and populate indexed Cassandra table
-    
-    └── __pycache__
-        ├── cassandra_utils.cpython-311.pyc
-        ├── cassandra_utils.cpython-312.pyc
-        └── mongo_utils.cpython-311.pyc
 ```
 
 ## Recent Progress and Features
@@ -61,6 +63,13 @@ Y:/DEVELOPER/PROJECTS/GROCERY-MONANDRA
 2. **Install Python packages**:
    ```bash
    pip install cassandra-driver pymongo python-dotenv streamlit pandas
+   ```
+
+## Project Clone
+1. Clone from github:
+   ```bash
+   git clone https://github.com/yaffawijaya/grocery-monandra.git
+   cd grocery-monandra
    ```
 
 ## Data Initialization
@@ -117,8 +126,8 @@ Y:/DEVELOPER/PROJECTS/GROCERY-MONANDRA
 
 ### MongoDB
 
-1. Prepare the connection string in `data/MongoDB/.env`:
-   ```ini
+1. Prepare the connection string in `data/MongoDB/.env` & `utils/.env`:
+   ```env
    CONNECTION_STRING="mongodb+srv://<username>:<password>@cluster-experiment-yaff.bfurl13.mongodb.net/?retryWrites=true&w=majority&appName=cluster-experiment-yaffa"
    ```
 2. Load initial collections into `groceries` database:
