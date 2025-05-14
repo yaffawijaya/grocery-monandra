@@ -4,10 +4,10 @@ This repository contains a Streamlit application designed to measure and compare
 
 ## App Demos
 ### Cassandra Execution Time Monitoring
-https://raw.githubusercontent.com/yaffawijaya/grocery-monandra/refs/heads/master/assets/cassandra.png
+![Cassandra Page](https://raw.githubusercontent.com/yaffawijaya/grocery-monandra/refs/heads/master/assets/cassandra.png)
 
 ### MongoDB Execution Time Monitoring
-https://raw.githubusercontent.com/yaffawijaya/grocery-monandra/refs/heads/master/assets/mongodb.png
+![MongoDB Page](https://raw.githubusercontent.com/yaffawijaya/grocery-monandra/refs/heads/master/assets/mongodb.png)
 
 ## Project Structure
 
