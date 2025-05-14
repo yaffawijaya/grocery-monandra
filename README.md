@@ -85,6 +85,9 @@ grocery-monandra
 2. Create keyspace, table, and index in one interactive session:
    ```bash
    docker exec -it cassandra cqlsh
+   ```
+   in `cqlsh` or cql shell:
+   ```cqlsh
    -- 1) Create keyspace
    CREATE KEYSPACE IF NOT EXISTS groceries
      WITH replication = {'class':'SimpleStrategy','replication_factor':1};
