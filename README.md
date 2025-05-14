@@ -111,7 +111,9 @@ grocery-monandra
    -- 4) Create a secondary index on branch
    CREATE INDEX IF NOT EXISTS idx_transaksi_cabang
      ON transaksi_harian (id_cabang);
-   EOF
+
+   -- 5) Then exit shell
+   exit
    ```
 3. Generate and import sample data:
    - Run the generator script to produce `inserts.cql`:
