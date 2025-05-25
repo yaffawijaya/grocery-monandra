@@ -53,7 +53,7 @@ if 'mongo_connection_status' in st.session_state:
     st.info(f"MongoDB Status: {st.session_state['mongo_connection_status']}")
 
 # ----------------- Sidebar -----------------
-page_options = ['MongoDB Benchmark', 'MongoDB Playground', 'Cassandra Benchmark'] # Added Playground
+page_options = ['MongoDB Benchmark', 'MongoDB Playground'] # Added Playground
 page = st.sidebar.radio('Select Page', page_options)
 st.sidebar.markdown('---')
 
