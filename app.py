@@ -17,6 +17,7 @@ st.set_page_config(page_title='DB Interaction & Monitor', layout='wide')
 DEFAULT_MONGO_DB_NAME = "grocery_store_db" # Default for benchmark
 ENV_PATH = os.path.join('.env')
 
+# Initialize Cassandra session
 @st.cache_resource
 def init_mongo_client(): # Changed to return client
     """
