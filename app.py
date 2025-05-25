@@ -6,6 +6,9 @@ from utils.cassandra_utils import get_cassandra_session
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
+
+
+
 # ----------------- Configuration -----------------
 # Load MongoDB connection string
 env_path = os.path.join(os.path.dirname(__file__), 'data', 'MongoDB', '.env')

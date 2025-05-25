@@ -46,7 +46,7 @@ def create_indexed_cassandra_table():
     ) WITH CLUSTERING ORDER BY (tanggal DESC);
     """
     session.execute(cql)
-    print(f"✅ Table {target_table} created")
+    print(f"Table {target_table} created")
 
 
 def generate_indexed_cassandra_data():

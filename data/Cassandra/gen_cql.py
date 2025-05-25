@@ -2,7 +2,7 @@ import random
 from datetime import date, timedelta
 
 # ── Konfigurasi ──────────────────────────────────────────────────────────────
-NUM_ROWS         = 2000
+NUM_ROWS         =  2000
 UNIQUE_TXN_COUNT = 300
 
 branches   = ['CB01', 'CB02']
