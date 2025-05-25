@@ -1,8 +1,3 @@
-Okay, let's revamp your `README.md` to accurately reflect all the great progress and features we've built into your Streamlit application, especially framing it within your ROSBD project context.
-
-Here's an updated version:
-
-```markdown
 # NoSQL Database Lab: Interaction & Performance Monitor (ROSBD Project)
 
 This repository contains a Streamlit application developed for the "Rekayasa dan Organisasi Sistem Big Data (ROSBD)" university project. The application serves as an interactive platform to demonstrate, benchmark, and interact with two NoSQL databases: Cassandra (a columnar store) and MongoDB (a document store), using a **Groceries** domain.
@@ -177,19 +172,3 @@ The application will typically be available at `http://localhost:8501`.
     * **Cassandra:** Ensure the Docker container (`cassandra-node1`) is running (`docker ps`) and port 9042 is correctly mapped.
 * **Data Not Appearing:** Ensure you have successfully run the `01-generate-data.ipynb` and `02-ingest-to-nosql.ipynb` notebooks to populate the databases.
 * **Streamlit Errors:** Check the terminal where you ran `streamlit run app.py` for detailed error messages. Ensure all dependencies in `requirements.txt` are installed.
-```
-
-**Key Changes in this README:**
-
-* **Title and Introduction:** Updated to be more comprehensive and highlight the project context.
-* **Application Features:** Added a new section detailing the key functionalities of the app, including the Home page, Playground, and Combined Analytics.
-* **App Previews:** Kept existing ones with a note about new pages.
-* **Project Context:** Integrated author names and assignment purpose.
-* **Project Structure:** Simplified and aligned with the `app.py`, notebooks, and `utils` structure we've been working with.
-* **Prerequisites:** Clarified.
-* **Environment Setup & `requirements.txt`:** Provided a minimal and functional `requirements.txt`.
-* **Data Initialization / Database Setup:** This is now much clearer, directing the user to run the two Jupyter notebooks (`01-generate-data.ipynb` and `02-ingest-to-nosql.ipynb`) for data generation and ingestion. This replaces the more manual `cqlsh` steps and individual Python scripts from your original README.
-* **Running the Application:** Standard instructions.
-* **Usage Notes:** Updated to cover the new features.
-
-This revised README should give a clear and accurate picture of your project's current state and how to set it up and run it. Remember to create the `requirements.txt` file in your project root as described.
