@@ -372,11 +372,11 @@ def fetch_mongo_employee_details(mongo_db_conn, employee_ids_list):
 def show_home_page():
     st.markdown("<h1 style='text-align: center; color: #138D75;'>NoSQL Database Lab: ROSBD Project</h1>", unsafe_allow_html=True)
     st.markdown("---")
-    col_logo_main1, col_logo_main_spacer, col_logo_main2 = st.columns([2,1,2])
-    with col_logo_main1:
-        st.image("https://1000logos.net/wp-content/uploads/2020/08/MongoDB-Logo.png", use_container_width=True) # Fix 1
-    with col_logo_main2:
-        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Cassandra_logo.svg/1200px-Cassandra_logo.svg.png", use_container_width=True) # Fix 1
+    # col_logo_main1, col_logo_main_spacer, col_logo_main2 = st.columns([2,1,2])
+    # with col_logo_main1:
+    #     st.image("https://1000logos.net/wp-content/uploads/2020/08/MongoDB-Logo.png", use_container_width=True) # Fix 1
+    # with col_logo_main2:
+    #     st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Cassandra_logo.svg/1200px-Cassandra_logo.svg.png", use_container_width=True) # Fix 1
     
     st.header("Project for Rekayasa dan Organisasi Sistem Big Data (ROSBD) - Spring 2025")
     st.markdown("""
