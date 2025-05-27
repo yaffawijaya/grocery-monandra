@@ -21,7 +21,7 @@ st.set_page_config(
 
 # ----------------- Configuration & Initial Setup -----------------
 DEFAULT_MONGO_DB_NAME = "grocery_store_db"
-ENV_PATH = os.path.join('notebooks', '.env') # Assuming app.py is in root
+ENV_PATH = os.path.join('.env') # Assuming app.py is in root
 
 @st.cache_resource
 def init_mongo_client():
