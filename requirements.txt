@@ -1,0 +1,6 @@
+streamlit
+pandas
+pymongo[srv] 
+python-dotenv
+cassandra-driver
+certifi 
