@@ -2,7 +2,7 @@
 import streamlit as st
 from cassandra.cluster import Cluster
 
-CASSANDRA_CONTACT_POINTS = ["127.0.0.1"]
+CASSANDRA_CONTACT_POINTS = ["34.50.95.141"]
 CASSANDRA_PORT = 9042
 CASSANDRA_KEYSPACE = "day_grocery" # As defined in your notebook
 
