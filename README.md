@@ -79,13 +79,8 @@ grocery-monandra/
 
 2.  **Create Python Environment** (example with Conda):
     ```bash
-    conda create -n monandra_env python=3.11 -y
-    conda activate monandra_env
-    ```
-    Alternatively, use `venv`:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    conda create -n monandra python=3.11 -y
+    conda activate monandra
     ```
 
 3.  **Install Python Packages:**
@@ -124,7 +119,11 @@ The data used by this application is synthetically generated and then ingested i
    docker network create cassandra-net # Create a network if you haven't
    # Check if container already exists: docker ps -a --filter "name=cassandra-node1"
    # If it exists and you want to start fresh: docker rm -f cassandra-node1
-   docker run -d --name cassandra-node1 --network cassandra-net -p 9042:9042 cassandra:latest
+   docker run -d --name cassandra --network cassandra-net -p 9042:9042 cassandra:latest
+   ```
+
+   ```bash
+   docker exec -it cassandra cqlsh
    ```
    Wait a minute or two for Cassandra to initialize. You can check logs with `docker logs cassandra-node1`.
 
